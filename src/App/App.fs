@@ -71,14 +71,14 @@ let view() =
     let model, dispatch = () |> Store.makeElmish init (update server) ignore
 
     // Projections from model. These will be bound to elements below
-    let page : IObservable<Page> = model |> Store.map getPage |> StoreXs.distinct
+    let page : IObservable<Page> = model |> Store.map getPage |> Store.distinct
     let isLoggedIn : IObservable<bool> = model |> Store.map (getUser >> userIsSet)
 
     // Local store to connect hamburger to nav menu. We *could* route this through Elmish
     let navMenuActive = Store.make false
     // Local store for spotting media change. Also, could go through Elmish
     let isMobile = Store.make false
-    let showAside = StoreXs.zip isMobile navMenuActive |> Store.map (fun (m,a) -> not m || a)
+    let showAside = Store.zip isMobile navMenuActive |> Store.map (fun (m,a) -> not m || a)
 
     // Listen to browser-sourced events
     let routerSubscription  = Navigable.listenLocation Router.parseRoute (dispatch << SetPage)
