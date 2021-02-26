@@ -23,3 +23,5 @@ Features:
     npm install
     npm run start
 ```
+
+![Screenshot of App](images/screenshot.png)
