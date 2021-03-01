@@ -62,7 +62,7 @@ let private defaultView (message : IObservable<string>) model dispatch =
                         column.tabletIs 10; column.desktopIs 8; column.widescreenIs 6
                         bulma.formBox [
                             on "submit" (fun _ -> AttemptLogin |> dispatch) [PreventDefault]
-                            action ""
+                            Attr.action ""
 
                             bulma.field [
                                 class' "has-text-danger"
@@ -77,9 +77,9 @@ let private defaultView (message : IObservable<string>) model dispatch =
 
                                         bindEvent "input" (fun e -> EventHelpers.validity(e).valid |> not) (fun s -> bindClass s "is-danger")
 
-                                        placeholder "Hint: your-name"
+                                        Attr.placeholder "Hint: your-name"
                                         Bind.attr ("value", model .> username , SetUsername >> dispatch)
-                                        required
+                                        Attr.required true
                                     ]
                                     bulma.icon [
                                         icon.isSmall
@@ -93,9 +93,9 @@ let private defaultView (message : IObservable<string>) model dispatch =
                                 bulma.control [
                                     control.hasIconsLeft
                                     bulma.password [
-                                        placeholder "Hint: sutilx9"
+                                        Attr.placeholder "Hint: sutilx9"
                                         Bind.attr("value", model .> password, SetPassword >> dispatch)
-                                        required ]
+                                        Attr.required true]
                                     bulma.icon [
                                         icon.isSmall
                                         icon.isLeft

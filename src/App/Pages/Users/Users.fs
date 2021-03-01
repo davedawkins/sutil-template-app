@@ -4,6 +4,8 @@ open Sutil
 open Sutil.DOM
 open Sutil.Attr
 open Sutil.Bulma
+open Feliz
+open type Feliz.length
 
 module DbSchema =
     type Name = {
@@ -145,13 +147,13 @@ let update msg model =
 
 let appStyle = [
     rule "div.select, select, .width100" [
-        Css.width "100%" // Streatch list and text box to fit column, looks nicer right aligned
+        Css.width (percent 100) // Streatch list and text box to fit column, looks nicer right aligned
     ]
     rule ".field-label" [
-        Css.flexGrow "2" // Allow more space for field label
+        Css.flexGrow 2// Allow more space for field label
     ]
     rule "label.label" [
-        Css.textAlign "left" // To match 7GUI spec
+        Css.textAlignLeft // To match 7GUI spec
     ]
 ]
 
@@ -190,14 +192,14 @@ let create() =
                 column.is 6
 
                 bulma.selectList [
-                    size 6
+                    Attr.size 6
 
                     let viewNames =
                         model |> Store.map filteredNames |> Observable.distinctUntilChanged
 
                     each viewNames (fun n ->
                         Html.option [
-                            value n.Id
+                            Attr.value n.Id
                             (sprintf "%s, %s" n.Surname n.Name) |> text
                             ])  []
 

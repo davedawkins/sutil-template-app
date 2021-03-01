@@ -10,38 +10,39 @@ open State
 open System
 open Remote
 open Sutil.Transition
-
+open type Feliz.length
+open Feliz
 
 let appStyle = [
     rule ".aside" [
-        Css.display "block"
+        Css.displayBlock
         Css.backgroundColor "#F9F9F9"
-        Css.borderRight "1px solid #DEDEDE"
+        Css.borderRight (px 1, borderStyle.solid, "#DEDEDE")
     ]
     rule ".aside .main" [
-        Css.padding "40px"
+        Css.padding (px 40)
         Css.color "#6F7B7E"
     ]
     rule ".aside .main .item" [
-        Css.display "block"
-        Css.padding "10px 0"
+        Css.displayBlock
+        Css.padding(px 10, zero)
         Css.color "#6F7B7E"
     ]
 
     rule ".aside .main .item:hover, .aside .main .item:active" [
         Css.backgroundColor "#F2F2F2"
-        Css.margin (Px 0.0, Px -50.0)
-        Css.paddingLeft "50px"
+        Css.margin (px 0.0, px -50.0)
+        Css.paddingLeft (px 50)
     ]
 
     rule ".sutil-logo-badge" [
-        Css.display "inline-flex"
+        Css.displayInlineFlex
         Css.fontFamily "'Coda Caption'"
-        Css.alignItems "center"
-        Css.justifyContent "center"
-        Css.width "32px"
-        Css.height "24px"
-        Css.background "#444444"
+        Css.alignItemsCenter
+        Css.justifyContentCenter
+        Css.width (px 32)
+        Css.height (px 24)
+        Css.backgroundColor "#444444"
         Css.color "white"
     ]
 ]
@@ -97,21 +98,21 @@ let view() =
                     class' "title is-4 sutil-logo"
                     Html.a [
                         class' "navbar-item"
-                        href "https://github.com/davedawkins/Sutil"
+                        Attr.href "https://github.com/davedawkins/Sutil"
                         Html.div [ class' "sutil-logo-badge"; Html.span [ text "<>" ] ]
-                        Html.span [ style [ Css.marginLeft "6px" ]; text "SUTIL" ]
+                        Html.span [ style [ Css.marginLeft (px 6) ]; text "SUTIL" ]
                     ]
                 ]
                 Html.a [
-                    role "button"
+                    Attr.roleButton
                     class' "navbar-burger"
                     Bindings.bindClass navMenuActive "is-active"
-                    ariaLabel "menu"
-                    ariaExpanded "false"
-                    dataTarget "appNavMenu"
-                    Html.span[ ariaHidden "true" ]
-                    Html.span[ ariaHidden "true" ]
-                    Html.span[ ariaHidden "true" ]
+                    Attr.ariaLabel "menu"
+                    Attr.ariaExpanded false
+                    Attr.custom("data-target","appNavMenu")
+                    Html.span[ Attr.ariaHidden true ]
+                    Html.span[ Attr.ariaHidden true ]
+                    Html.span[ Attr.ariaHidden true ]
                     onClick (fun _ -> navMenuActive |> Store.modify not) [ PreventDefault ]
                 ]
             ]
@@ -158,8 +159,8 @@ let view() =
                 class' "column is-2 aside hero is-fullheight"
                 Html.div [
                     class' "main"
-                    Html.a [ class' "item"; href "#home"; text "Home" ]
-                    Html.a [ class' "item"; href "#users"; text "Users" ]
+                    Html.a [ class' "item"; Attr.href "#home"; text "Home" ]
+                    Html.a [ class' "item"; Attr.href "#users"; text "Users" ]
                 ]
             ] |> transition [fly |> withProps [ Duration 500.0; X -500.0 ] |> In] showAside
 
