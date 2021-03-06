@@ -4,6 +4,7 @@ open Sutil
 open Sutil.DOM
 open Sutil.Bulma
 open Sutil.Attr
+open Sutil.Html
 open System
 
 let create (message : IObservable<string>) =

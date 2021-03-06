@@ -59,21 +59,21 @@ let private defaultView (message : IObservable<string>) model dispatch =
                 bulma.columns [
                     columns.isCentered
                     bulma.column [
-                        column.tabletIs 10; column.desktopIs 8; column.widescreenIs 6
-                        bulma.formBox [
+                        column.is10Tablet; column.is8Desktop; column.is6Widescreen
+                        bulma.box [
                             on "submit" (fun _ -> AttemptLogin |> dispatch) [PreventDefault]
                             Attr.action ""
 
-                            bulma.field [
+                            bulma.field.div [
                                 class' "has-text-danger"
-                                Bind.fragment message text
+                                Bind.fragment message Html.text
                             ] |> Transition.showIf (message |> Store.map (fun m -> m <> ""))
 
-                            bulma.field [
+                            bulma.field.div [
                                 bulma.label "Username"
-                                bulma.control [
+                                bulma.control.div [
                                     control.hasIconsLeft
-                                    bulma.input [
+                                    bulma.input.text [
 
                                         bindEvent "input" (fun e -> EventHelpers.validity(e).valid |> not) (fun s -> bindClass s "is-danger")
 
@@ -88,11 +88,11 @@ let private defaultView (message : IObservable<string>) model dispatch =
                                     ]
                                 ]
                             ]
-                            bulma.field [
+                            bulma.field.div [
                                 bulma.label "Password"
-                                bulma.control [
+                                bulma.control.div [
                                     control.hasIconsLeft
-                                    bulma.password [
+                                    bulma.input.password [
                                         Attr.placeholder "Hint: sutilx9"
                                         Bind.attr("value", model .> password, SetPassword >> dispatch)
                                         Attr.required true]
@@ -103,22 +103,26 @@ let private defaultView (message : IObservable<string>) model dispatch =
                                     ]
                                 ]
                             ]
-                            bulma.field [
-                                bulma.labelCheckbox " Remember me" [
-                                    Bind.attr("checked", model .> rememberMe, SetRememberMe >> dispatch)
+                            bulma.field.div [
+                                bulma.inputLabels.checkbox [
+                                    bulma.input.checkbox [
+                                        Bind.attr("checked", model .> rememberMe, SetRememberMe >> dispatch)
+                                    ]
+                                    Html.text " Remember me"
                                 ]
                             ]
-                            bulma.field [
+                            bulma.field.div [
                                 field.isGrouped
-                                bulma.control [
-                                    bulma.button [
-                                        button.isSuccess
-                                        text "Login"
+                                bulma.control.div [
+                                    bulma.button.button [
+                                        color.isSuccess
+                                        Html.text "Login"
+                                        onClick (fun _ -> dispatch AttemptLogin) [PreventDefault]
                                     ]
                                 ]
-                                bulma.control [
-                                    bulma.button [
-                                        text "Cancel"
+                                bulma.control.div [
+                                    bulma.button.button [
+                                        Html.text "Cancel"
                                         onClick (fun _ -> dispatch CancelLogin) [PreventDefault]
                                     ]
                                 ]

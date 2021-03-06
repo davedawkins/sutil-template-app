@@ -4,7 +4,6 @@ open Sutil
 open Sutil.DOM
 open Sutil.Attr
 open Sutil.Bulma
-open Feliz
 open type Feliz.length
 
 module DbSchema =
@@ -160,38 +159,38 @@ let appStyle = [
 let create() =
     let model, dispatch = () |> Store.makeElmish init update ignore
 
-    let labeledField label model dispatch =
-        bulma.field [
+    let labeledField (label:string) model dispatch =
+        bulma.field.div [
             field.isHorizontal
-            bulma.fieldLabel [ bulma.label [ text label ] ]
+            bulma.fieldLabel [ bulma.label [ Html.text label ] ]
             bulma.fieldBody [
-                bulma.control [
+                bulma.control.div [
                     class' "width100"
-                    bulma.input [
+                    bulma.input.text [
                         Bind.attr ("value",model,dispatch)
                     ]]]]
 
-    let button label enabled message =
-        bulma.controlInline [
-            bulma.button [
+    let button (label:string) enabled message =
+        bulma.control.p [
+            bulma.button.button [
                 Bind.attr ("disabled", model .> (enabled >> not))
-                text label
+                Html.text label
                 onClick (fun _ -> dispatch message) []
                 ] ]
 
     bulma.section [
         bulma.columns [
             bulma.column [
-                column.is 6
+                column.is6
                 labeledField "Filter prefix:" (model |> Store.map filter) (dispatch << SetFilter)
             ]
         ]
 
         bulma.columns [
             bulma.column [
-                column.is 6
+                column.is6
 
-                bulma.selectList [
+                Sutil.Bulma.Helpers.selectList [
                     Attr.size 6
 
                     let viewNames =
@@ -200,29 +199,29 @@ let create() =
                     each viewNames (fun n ->
                         Html.option [
                             Attr.value n.Id
-                            (sprintf "%s, %s" n.Surname n.Name) |> text
+                            (sprintf "%s, %s" n.Surname n.Name) |> Html.text
                             ])  []
 
                     Bind.selected (model |> Store.map selection, List.exactlyOne >> Select >> dispatch)
                 ]
             ]
             bulma.column [
-                column.is 6
+                column.is6
                 labeledField "Name:" (model |> Store.map name) (dispatch << SetName)
                 labeledField "Surname:" (model |> Store.map surname) (dispatch << SetSurname)
             ]
         ]
 
-        bulma.field [
+        bulma.field.div [
             field.isGrouped
             button "Create" canCreate Create
             button "Update" canUpdate Update
             button "Delete" canDelete Delete
         ]
 
-        bulma.field [
+        bulma.field.div [
             color.hasTextDanger
-            Bind.fragment (model |> Store.map error) text
+            Bind.fragment (model |> Store.map error) Html.text
         ]
 
     ] |> withStyle appStyle

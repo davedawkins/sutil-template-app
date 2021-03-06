@@ -13,6 +13,6 @@
     <Compile Include="App.fs" />
   </ItemGroup>
   <ItemGroup>
-     <PackageReference Include="Sutil" Version="0.2.1-*" />
+     <PackageReference Include="Sutil" Version="1.0.0-*" />
   </ItemGroup>
 </Project>
