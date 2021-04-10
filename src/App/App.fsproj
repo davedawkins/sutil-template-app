@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <UseLocalSutil>False</UseLocalSutil>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Types.fs" />
@@ -12,7 +13,17 @@
     <Compile Include="State.fs" />
     <Compile Include="App.fs" />
   </ItemGroup>
-  <ItemGroup>
-     <PackageReference Include="Sutil" Version="1.0.0-*" />
-  </ItemGroup>
+  <Choose>
+    <When Condition=" '$(UseLocalSutil)'=='True' ">
+        <ItemGroup>
+            <ProjectReference Include="..\..\..\Sutil\src\Sutil\Sutil.fsproj" />
+        </ItemGroup>
+    </When>
+    <When Condition=" '$(UseLocalSutil)'=='False' ">
+        <ItemGroup>
+            <PackageReference Include="Sutil" Version="1.0.0-alpha-006" />
+        </ItemGroup>
+    </When>
+  </Choose>
+
 </Project>
