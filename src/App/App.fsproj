@@ -21,7 +21,7 @@
     </When>
     <When Condition=" '$(UseLocalSutil)'=='False' ">
         <ItemGroup>
-            <PackageReference Include="Sutil" Version="1.0.0-alpha-006" />
+            <PackageReference Include="Sutil" Version="1.0.0-*" />
         </ItemGroup>
     </When>
   </Choose>
