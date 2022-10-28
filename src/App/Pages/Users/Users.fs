@@ -196,11 +196,11 @@ let create() =
                     let viewNames =
                         model |> Store.map filteredNames |> Observable.distinctUntilChanged
 
-                    each viewNames (fun n ->
+                    Bind.each (viewNames,fun n ->
                         Html.option [
                             Attr.value n.Id
                             (sprintf "%s, %s" n.Surname n.Name) |> Html.text
-                            ])  []
+                            ])  
 
                     Bind.selected (model |> Store.map selection, List.exactlyOne >> Select >> dispatch)
                 ]
