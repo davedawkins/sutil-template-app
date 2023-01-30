@@ -1,17 +1,16 @@
 module App
 
 open Sutil
-open Sutil.DOM
-open Sutil.Attr
 open Sutil.Styling
+open Sutil.CoreElements
 
 open Types
 open State
 open System
 open Remote
-open Sutil.Transition
 open type Feliz.length
 open Feliz
+open Sutil.Transition
 
 let appStyle = [
     rule ".aside" [
@@ -82,31 +81,32 @@ let view() =
     let showAside = Store.zip isMobile navMenuActive |> Store.map (fun (m,a) -> not m || a)
 
     // Listen to browser-sourced events
-    let routerSubscription  = Navigable.listenLocation Router.parseRoute (dispatch << SetPage)
-    let mediaSubscription = MediaQuery.listenMedia "(max-width: 768px)" (Store.set isMobile)
+    let routerSubscription  = Navigable.listenLocation(Router.parseRoute, dispatch << SetPage)
+    let mediaSubscription = Media.listenMedia("(max-width: 768px)",Store.set isMobile)
 
     fragment [
-        el "nav" [
-            class' "navbar has-shadow"
-            attr("role","navigation")
+        Html.nav [
+            Attr.className "navbar has-shadow"
+
+            Attr.roleNavigation
 
             Html.div [
-                class' "navbar-brand"
+                Attr.className "navbar-brand"
 
                 // Temporary logo
                 Html.h1 [
-                    class' "title is-4 sutil-logo"
+                    Attr.className "title is-4 sutil-logo"
                     Html.a [
-                        class' "navbar-item"
+                        Attr.className "navbar-item"
                         Attr.href "https://github.com/davedawkins/Sutil"
-                        Html.div [ class' "sutil-logo-badge"; Html.span [ text "<>" ] ]
+                        Html.div [ Attr.className "sutil-logo-badge"; Html.span [ text "<>" ] ]
                         Html.span [ style [ Css.marginLeft (px 6) ]; text "SUTIL" ]
                     ]
                 ]
                 Html.a [
                     Attr.roleButton
-                    class' "navbar-burger"
-                    Bindings.bindClass navMenuActive "is-active"
+                    Attr.className "navbar-burger"
+                    Bind.toggleClass(navMenuActive,"is-active")
                     Attr.ariaLabel "menu"
                     Attr.ariaExpanded false
                     Attr.custom("data-target","appNavMenu")
@@ -119,20 +119,20 @@ let view() =
 
 
             Html.div [
-                class' "navbar-menu"
+                Attr.className "navbar-menu"
                 id' "appNavMenu"
 
-                Bindings.bindClass navMenuActive "is-active"
+                Bind.toggleClass(navMenuActive,"is-active")
 
                 Html.div [
-                    class' "navbar-end"
+                    Attr.className "navbar-end"
                     Html.div [
-                        class' "navbar-item"
+                        Attr.className "navbar-item"
                         Html.div [
-                            class' "buttons"
+                            Attr.className "buttons"
                             Bind.fragment isLoggedIn <| fun loggedIn ->
                                 Html.a [
-                                    class' "button is-light"
+                                    Attr.className "button is-light"
                                     if (loggedIn) then
                                         fragment [
                                             text "Logout"
@@ -151,21 +151,21 @@ let view() =
         ]
 
         Html.div [
-            class' "columns"
+            Attr.className "columns"
             disposeOnUnmount [ model ]
             unsubscribeOnUnmount [ routerSubscription; mediaSubscription ]
 
-            el "aside" [
-                class' "column is-2 aside hero is-fullheight"
+            Html.aside [
+                Attr.className "column is-2 aside hero is-fullheight"
                 Html.div [
-                    class' "main"
-                    Html.a [ class' "item"; Attr.href "#home"; text "Home" ]
-                    Html.a [ class' "item"; Attr.href "#users"; text "Users" ]
+                    Attr.className "main"
+                    Html.a [ Attr.className "item"; Attr.href "#home"; text "Home" ]
+                    Html.a [ Attr.className "item"; Attr.href "#users"; text "Users" ]
                 ]
             ] |> transition [fly |> withProps [ Duration 500.0; X -500.0 ] |> In] showAside
 
             Html.div [
-                class' "column is-10"
+                Attr.className "column is-10"
                 Bind.fragment page <| viewPage model dispatch
             ]
         ]
@@ -173,3 +173,5 @@ let view() =
 
 // Start the app
 view() |> Program.mountElement "sutil-app"
+
+

@@ -6,8 +6,7 @@ module Login
 //
 
 open Sutil
-open Sutil.DOM
-open Sutil.Attr
+open Sutil.CoreElements
 open Sutil.Bulma
 open System
 
@@ -38,7 +37,7 @@ let private init details =
 module EventHelpers =
     open Browser.Types
 
-    let inputElement (target:EventTarget) = target |> asElement<HTMLInputElement>
+    let inputElement (target:EventTarget) = target |> DomHelpers.asElement<HTMLInputElement>
 
     let validity (e : Event) =
         inputElement(e.target).validity

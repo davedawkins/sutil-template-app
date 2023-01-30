@@ -1,8 +1,6 @@
 module Users
 
 open Sutil
-open Sutil.DOM
-open Sutil.Attr
 open Sutil.Bulma
 open type Feliz.length
 
@@ -165,7 +163,7 @@ let create() =
             bulma.fieldLabel [ bulma.label [ Html.text label ] ]
             bulma.fieldBody [
                 bulma.control.div [
-                    class' "width100"
+                    Attr.className "width100"
                     bulma.input.text [
                         Bind.attr ("value",model,dispatch)
                     ]]]]
@@ -175,7 +173,7 @@ let create() =
             bulma.button.button [
                 Bind.attr ("disabled", model .> (enabled >> not))
                 Html.text label
-                onClick (fun _ -> dispatch message) []
+                Ev.onClick (fun _ -> dispatch message)
                 ] ]
 
     bulma.section [
@@ -200,7 +198,7 @@ let create() =
                         Html.option [
                             Attr.value n.Id
                             (sprintf "%s, %s" n.Surname n.Name) |> Html.text
-                            ])  
+                            ])
 
                     Bind.selected (model |> Store.map selection, List.exactlyOne >> Select >> dispatch)
                 ]
