@@ -8,3 +8,4 @@ bundle.js
 *.fs.js
 .fake
 .ionide
+.vscode/settings.json

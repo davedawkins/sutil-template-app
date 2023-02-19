@@ -157,7 +157,7 @@ let appStyle = [
 let create() =
     let model, dispatch = () |> Store.makeElmish init update ignore
 
-    let labeledField (label:string) model dispatch =
+    let labeledField (label:string) (model : IObservable<string>) (dispatch : string -> unit) =
         bulma.field.div [
             field.isHorizontal
             bulma.fieldLabel [ bulma.label [ Html.text label ] ]
@@ -165,7 +165,7 @@ let create() =
                 bulma.control.div [
                     Attr.className "width100"
                     bulma.input.text [
-                        Bind.attr ("value",model,dispatch)
+                        Bind.attr("value", model, dispatch )
                     ]]]]
 
     let button (label:string) enabled message =
