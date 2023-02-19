@@ -15,5 +15,10 @@
   <ItemGroup>
     <PackageReference Include="Sutil" Version="2.*" />
   </ItemGroup>
-
+  <Target Name="ReallyClean" AfterTargets="Clean">
+    <!-- Remove obj folder -->
+    <RemoveDir Directories="$(BaseIntermediateOutputPath)" />
+    <!-- Remove bin folder -->
+    <RemoveDir Directories="$(BaseOutputPath)" />
+  </Target>
 </Project>
